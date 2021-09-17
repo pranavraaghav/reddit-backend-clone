@@ -1,10 +1,28 @@
-import app from "./app"
-import http from "http"
+import express from "express"
+import { Request, Response } from "express"
 import * as dotenv from "dotenv"
+import { createConnection } from "typeorm"
+import { AppRoutes } from "./routes"
 
 dotenv.config()
-const PORT: number = Number(process.env.PORT) || 8080
+const PORT = process.env.PORT || 8080
 
-const server = http.createServer(app)
+createConnection().then(async connection => {
+    
+    const app = express()
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+    // register all routes
+    AppRoutes.forEach(route => {
+        app[route.method](route.path, (request: Request, response: Response, next: Function) => {
+            route.action(request, response)
+                .then(() => next)
+                .catch((err: any) => next(err))
+        })
+    })
+
+    // run app
+    app.listen(PORT)
+
+    console.log(`Application running on port ${PORT}`)
+
+}).catch(err => console.log("TypeORM connection error: ", err))
