@@ -1,30 +1,36 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, OneToMany } from 'typeorm'
-import { User } from './User'
-import { Post } from './Post'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  OneToMany,
+} from "typeorm";
+import { User } from "./User";
+import { Post } from "./Post";
 
 @Entity()
 export class Comment {
+  @PrimaryGeneratedColumn()
+  comment_id: string;
 
-    @PrimaryGeneratedColumn()
-    comment_id: string
-    
-    @CreateDateColumn()
-    created_at: Date
-    
-    @Column()
-    comment: string
+  @CreateDateColumn()
+  created_at: Date;
 
-    @ManyToOne(() => User, user => user.comments)
-    created_by: User
+  @Column()
+  comment: string;
 
-    @ManyToOne(() => Post, post => post.comments, {
-        onDelete: 'CASCADE' // comments get deleted when parent post is deleted
-    })
-    post_id: Post
+  @ManyToOne(() => User, (user) => user.comments)
+  created_by: User;
 
-    @ManyToOne(() => Comment, comment => comment.parent_comment_id)
-    child_comment_id: Comment
+  @ManyToOne(() => Post, (post) => post.comments, {
+    onDelete: "CASCADE", // comments get deleted when parent post is deleted
+  })
+  post_id: Post;
 
-    @OneToMany(() => Comment, comment => comment.child_comment_id)
-    parent_comment_id: Comment
+  @ManyToOne(() => Comment, (comment) => comment.parent_comment_id)
+  child_comment_id: Comment;
+
+  @OneToMany(() => Comment, (comment) => comment.child_comment_id)
+  parent_comment_id: Comment;
 }
