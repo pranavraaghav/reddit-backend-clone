@@ -10,6 +10,9 @@ export class Community {
     
     @CreateDateColumn()
     created_at: Date
+
+    @Column()
+    name: string
     
     @Column() 
     description: string 
@@ -17,7 +20,7 @@ export class Community {
     @ManyToOne(() => User, user => user.created_communities)
     created_by_user_id: User
     
-    @OneToMany(() => Post, post => post.community_id)
+    @OneToMany(() => Post, post => post.community)
     posts: Post[]
     
 }

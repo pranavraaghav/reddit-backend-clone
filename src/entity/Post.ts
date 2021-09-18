@@ -12,15 +12,29 @@ export class Post {
     @CreateDateColumn()
     created_at: Date
     
-    @Column()
+    @Column({
+        nullable: false
+    })
+    title: string
+
+    @Column({
+        nullable: true
+    })
     imageurl: string
 
-    @ManyToOne(() => Community, community => community.posts)
-    community_id: Community
+    @Column({
+        nullable: true
+    }) 
+    description: string 
+
+    @ManyToOne(() => Community, community => community.posts, { 
+        onDelete: 'CASCADE' // When community is deleted, post is also deleted
+    })
+    community: Community
+
+    @ManyToOne(() => User, user => user.posts)
+    created_by: User
 
     @OneToMany(() => Comment, comment => comment.post_id)
     comments: Comment
-
-    @ManyToOne(() => User, user => user.posts)
-    user_id: User
 }

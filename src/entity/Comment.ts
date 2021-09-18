@@ -15,9 +15,11 @@ export class Comment {
     comment: string
 
     @ManyToOne(() => User, user => user.comments)
-    user_id: User
+    created_by: User
 
-    @ManyToOne(() => Post, post => post.comments)
+    @ManyToOne(() => Post, post => post.comments, {
+        onDelete: 'CASCADE' // comments get deleted when parent post is deleted
+    })
     post_id: Post
 
     @ManyToOne(() => Comment, comment => comment.parent_comment_id)
