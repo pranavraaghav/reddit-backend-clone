@@ -11,6 +11,8 @@ createConnection().then(async connection => {
     
     const app = express()
 
+    app.use(express.json())
+
     // register all routes
     AppRoutes.forEach(route => {
         app[route.method](route.path, (request: Request, response: Response, next: Function) => {

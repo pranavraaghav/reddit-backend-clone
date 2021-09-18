@@ -15,13 +15,13 @@ export class User {
     @Column()
     username: string
 
-    @OneToMany(() => Post, post => post.user_id)
+    @OneToMany(() => Post, post => post.created_by)
     posts: Post[]
 
     @OneToMany(() => Community, community => community.created_by_user_id)
     created_communities: Community[]
 
-    @OneToMany(() => Comment, comment => comment.user_id)
+    @OneToMany(() => Comment, comment => comment.created_by)
     comments: Comment[]
 
 }
