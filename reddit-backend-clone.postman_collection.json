@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "2c98fb09-0b84-4844-a67c-1c0437331b9a",
+		"name": "reddit-backend-clone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a Community",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"test-community\",\r\n    \"user_id\": \"{{user_id}}\",\r\n    \"description\":\"Community for testing purposes\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/community",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"community"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"test-post\",\r\n    \"community_id\":\"{{community_id}}\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/post",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Post",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"title\":\"test-post\",\r\n    \"description\":\"updated: {{$randomAlphaNumeric}}\",\r\n    \"imageurl\":\"updated: {{$randomAvatarImage}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/post",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Post Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/post",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Posts in Community",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/post/:community_id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						":community_id"
+					],
+					"variable": [
+						{
+							"key": "community_id",
+							"value": "{{community_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user_id",
+			"value": "6855a1a7-0130-4d1b-b61b-dafe79c88165"
+		},
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "community_id",
+			"value": "36e07ad3-4395-4080-9abf-b6db3adf6a4e"
+		},
+		{
+			"key": "post_id",
+			"value": "3dc26bd6-ceb2-4f67-a902-a5c1ce697978"
+		}
+	]
+}
