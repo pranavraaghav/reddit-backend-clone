@@ -84,7 +84,7 @@
 			"response": []
 		},
 		{
-			"name": "Update a Post Copy",
+			"name": "Delete a Post",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -132,6 +132,58 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create a User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"test-user4\",\r\n    \"password\":\"test-password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\":\"e376f652-4244-44ab-b6b3-c2f038afb29d\",\r\n    \"password\":\"test-password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -157,7 +209,7 @@
 	"variable": [
 		{
 			"key": "user_id",
-			"value": "6855a1a7-0130-4d1b-b61b-dafe79c88165"
+			"value": "a23a1e49-659d-4c3a-b6f9-d29fd94a4b55"
 		},
 		{
 			"key": "base_url",
