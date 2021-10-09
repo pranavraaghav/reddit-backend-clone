@@ -6,288 +6,348 @@
 	},
 	"item": [
 		{
-			"name": "Create a Community",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"test-community\",\r\n    \"user_id\": \"{{user_id}}\",\r\n    \"description\":\"Community for testing purposes\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Post",
+			"item": [
+				{
+					"name": "Create a Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"test-post\",\r\n    \"community_id\":\"{{community_id}}\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/post",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}/community",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"community"
-					]
+				{
+					"name": "Update a Post",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"title\":\"test-post\",\r\n    \"description\":\"updated: {{$randomAlphaNumeric}}\",\r\n    \"imageurl\":\"updated: {{$randomAvatarImage}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/post",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Post",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/post",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Posts in Community",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/community/:community_id/posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"community",
+								":community_id",
+								"posts"
+							],
+							"variable": [
+								{
+									"key": "community_id",
+									"value": "{{community_id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Create a Post",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\":\"test-post\",\r\n    \"community_id\":\"{{community_id}}\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "User",
+			"item": [
+				{
+					"name": "Create a User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"test-user5\",\r\n    \"password\":\"test-password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}/post",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"post"
-					]
+				{
+					"name": "Delete a User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"e376f652-4244-44ab-b6b3-c2f038afb29d\",\r\n    \"password\":\"test-password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Update a Post",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"title\":\"test-post\",\r\n    \"description\":\"updated: {{$randomAlphaNumeric}}\",\r\n    \"imageurl\":\"updated: {{$randomAvatarImage}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Community",
+			"item": [
+				{
+					"name": "Create a Community",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test-community\",\r\n    \"user_id\": \"{{user_id}}\",\r\n    \"description\":\"Community for testing purposes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/community",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"community"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/post",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"post"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Delete a Post",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Create Comment under Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/post/comment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post",
+								"comment"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}/post",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"post"
-					]
+				{
+					"name": "Create Comment under Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"comment_id\": \"0d93e513-956d-4731-83f9-a6b422f97e91\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/comment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Comment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment_id\":\"6f76a8df-ce06-4a5d-99e5-24ea6741873c\",\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment_id\": \"14d1460d-2a9b-47f9-ac33-d4c63ed8b0dc\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment under Post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/post/:post_id/comments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post",
+								":post_id",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "post_id",
+									"value": "{{post_id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Get All Posts in Community",
+			"name": "Base Request",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/post/:community_id",
+					"raw": "{{base_url}}",
 					"host": [
 						"{{base_url}}"
-					],
-					"path": [
-						"post",
-						":community_id"
-					],
-					"variable": [
-						{
-							"key": "community_id",
-							"value": "{{community_id}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create a User",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"test-user5\",\r\n    \"password\":\"test-password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/user",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete a User",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"user_id\":\"e376f652-4244-44ab-b6b3-c2f038afb29d\",\r\n    \"password\":\"test-password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/user",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Comment under Post",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"75796956-bef0-4545-b2a4-ad3237afd417\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/post/comment",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"post",
-						"comment"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Comment under Comment",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"comment_id\":\"0e9c5fe3-2e7c-4cd2-a37b-50f59dbe2733\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/comment/comment",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"comment",
-						"comment"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update a Comment",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"comment_id\":\"6f76a8df-ce06-4a5d-99e5-24ea6741873c\",\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/comment/",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"comment",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete a Comment",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"comment_id\":\"d6a4ac0a-9253-4ca2-a3d5-eac133503dfe\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/comment/",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"comment",
-						""
 					]
 				}
 			},
