@@ -140,7 +140,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"test-user4\",\r\n    \"password\":\"test-password\"\r\n}",
+					"raw": "{\r\n    \"username\":\"test-user5\",\r\n    \"password\":\"test-password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -180,6 +180,114 @@
 					],
 					"path": [
 						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Comment under Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"75796956-bef0-4545-b2a4-ad3237afd417\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/post/comment",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"post",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Comment under Comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"comment_id\":\"0e9c5fe3-2e7c-4cd2-a37b-50f59dbe2733\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/comment/comment",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"comment",
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Comment",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comment_id\":\"6f76a8df-ce06-4a5d-99e5-24ea6741873c\",\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/comment/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"comment",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Comment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comment_id\":\"d6a4ac0a-9253-4ca2-a3d5-eac133503dfe\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/comment/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"comment",
+						""
 					]
 				}
 			},

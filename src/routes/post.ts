@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { commentUnderPostAction } from "../controller/commentUnderPostAction";
 import { postCreateAction } from "../controller/postCreateAction";
 import { postDeleteAction } from "../controller/postDeleteAction";
 import { postGetAllByCommunityAction } from "../controller/postGetAllByCommunityAction";
@@ -8,6 +9,10 @@ export const router = Router();
 
 router.post("/", (request, response) => {
   postCreateAction(request, response);
+});
+
+router.post("/comment", (request, response) => {
+  commentUnderPostAction(request, response);
 });
 
 router.put("/", (request, response) => {
