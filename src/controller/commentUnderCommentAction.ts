@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Comment } from "../entity/Comment";
-import { getManager } from "typeorm";
+import { getConnection } from "typeorm";
 import { User } from "../entity/User";
 import Joi from "joi";
 
@@ -25,7 +25,7 @@ export async function commentUnderCommentAction(
 
   // Fetching user
   try {
-    var user = await getManager()
+    var user = await getConnection()
       .getRepository(User)
       .findOne({
         select: ["user_id", "username"],
@@ -44,12 +44,14 @@ export async function commentUnderCommentAction(
 
   // Fetching parent comment
   try {
-    var parentComment = await getManager()
+    var parentComment = await getConnection()
       .getRepository(Comment)
-      .findOne({
-        select: ["comment_id"],
-        where: { comment_id: comment_id },
-      });
+      .createQueryBuilder("comment")
+      .innerJoin("comment.post", "post")
+      .select(["comment.comment_id", "post.post_id", "post.comment_count"])
+      .where("comment.comment_id = :id", { id: comment_id })
+      .getOne();
+
     if (!parentComment) {
       response.status(404).json({
         message: "parentComment does not exist, check comment_id",
@@ -65,11 +67,21 @@ export async function commentUnderCommentAction(
   comment.parent = parentComment;
   comment.created_by = user;
   comment.text = text;
+  comment.post = parentComment.post;
 
+  // Create Comment
   try {
-    const commentRepo = getManager().getRepository(Comment);
-    response.status(201).send(await commentRepo.save(comment));
+    var createdComment = await getConnection()
+      .getRepository(Comment)
+      .save(comment);
   } catch (error) {
     response.status(500).json({ error: error });
+    return;
   }
+
+  // Response
+  const responseObject: any = createdComment;
+  delete responseObject.parent;
+  delete responseObject.post;
+  response.status(201).send(createdComment);
 }

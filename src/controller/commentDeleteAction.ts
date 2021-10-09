@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { Comment } from "../entity/Comment";
 import { getManager } from "typeorm";
-import { User } from "../entity/User";
 import Joi from "joi";
-import { Post } from "../entity/Post";
+import recursiveDescendantCommentDelete from "../service/recursiveCommentDelete";
 
 export async function commentDeleteAction(
   request: Request,
@@ -30,7 +29,7 @@ export async function commentDeleteAction(
     var comment = await commentRepo
       .createQueryBuilder("comment")
       .leftJoin("comment.created_by", "created_by")
-      .addSelect("created_by.user_id")
+      .addSelect(["created_by.user_id"])
       .where("comment.comment_id = :comment_id", { comment_id: comment_id })
       .getOne();
   } catch (error) {
@@ -42,7 +41,7 @@ export async function commentDeleteAction(
 
   if (!comment) {
     response.status(404).json({
-      message: "comment does not exist, check comment_id",
+      message: "comment does not exist",
     });
     return;
   }
@@ -54,12 +53,15 @@ export async function commentDeleteAction(
     return;
   }
 
+  // Delete the comment
   try {
-    //   TODO: Figure out how softRemove would work throughout the stack
-    response.status(200).send(await commentRepo.remove(comment));
+    await recursiveDescendantCommentDelete(comment);
   } catch (error) {
     response
       .status(500)
-      .json({ message: "Error updating value", error: error });
+      .json({ message: "Error deleting comment", error: error });
+    return;
   }
+
+  response.status(200).send({ message: "Deleted comments recursively" });
 }

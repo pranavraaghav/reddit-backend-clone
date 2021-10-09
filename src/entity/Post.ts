@@ -5,6 +5,8 @@ import {
   ManyToOne,
   CreateDateColumn,
   OneToMany,
+  Connection,
+  getConnection,
 } from "typeorm";
 import { User } from "./User";
 import { Comment } from "./Comment";
@@ -33,6 +35,9 @@ export class Post {
   })
   description: string;
 
+  @Column({ default: 0, type: "integer" })
+  comment_count: number;
+
   @ManyToOne(() => Community, (community) => community.posts, {
     onDelete: "CASCADE", // When community is deleted, post is also deleted
   })
@@ -43,4 +48,21 @@ export class Post {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  async incrementCommentCount(value?: number) {
+    this.comment_count += value || 1;
+    try {
+      return getConnection().getRepository(Post).save(this);
+    } catch (error) {
+      return error;
+    }
+  }
+  async decrementCommentCountBy(value?: number) {
+    this.comment_count -= value || 1;
+    try {
+      getConnection().getRepository(Post).save(this);
+    } catch (error) {
+      return error;
+    }
+  }
 }
