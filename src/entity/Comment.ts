@@ -5,20 +5,25 @@ import {
   ManyToOne,
   CreateDateColumn,
   OneToMany,
+  DeleteDateColumn,
 } from "typeorm";
 import { User } from "./User";
 import { Post } from "./Post";
 
 @Entity()
 export class Comment {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   comment_id: string;
 
   @CreateDateColumn()
   created_at: Date;
 
+  // Soft remove implementation pending
+  @DeleteDateColumn()
+  deleted_at?: Date;
+
   @Column()
-  comment: string;
+  text: string;
 
   @ManyToOne(() => User, (user) => user.comments)
   created_by: User;
@@ -26,11 +31,13 @@ export class Comment {
   @ManyToOne(() => Post, (post) => post.comments, {
     onDelete: "CASCADE", // comments get deleted when parent post is deleted
   })
-  post_id: Post;
+  post: Post;
 
-  @ManyToOne(() => Comment, (comment) => comment.parent_comment_id)
-  child_comment_id: Comment;
+  @OneToMany(() => Comment, (comment) => comment.parent, {
+    cascade: true,
+  })
+  children: Comment[];
 
-  @OneToMany(() => Comment, (comment) => comment.child_comment_id)
-  parent_comment_id: Comment;
+  @ManyToOne(() => Comment, (comment) => comment.children)
+  parent: Comment;
 }

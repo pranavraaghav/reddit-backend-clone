@@ -41,7 +41,6 @@ export async function postDeleteAction(request: Request, response: Response) {
   }
 
   // validate user
-  // TODO: get user id from request after authentication
   if (post.created_by.user_id != user_id) {
     response.status(400).json({
       message: "Only creator of a post can delete it",
