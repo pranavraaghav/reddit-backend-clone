@@ -4,13 +4,19 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
-  OneToMany,
   DeleteDateColumn,
+  AfterRemove,
+  AfterInsert,
+  getConnection,
+  TreeParent,
+  TreeChildren,
+  Tree,
 } from "typeorm";
 import { User } from "./User";
 import { Post } from "./Post";
 
 @Entity()
+@Tree("closure-table")
 export class Comment {
   @PrimaryGeneratedColumn("uuid")
   comment_id: string;
@@ -25,6 +31,11 @@ export class Comment {
   @Column()
   text: string;
 
+  @Column({
+    default: false,
+  })
+  isRoot: boolean; // useful while fetching comment trees
+
   @ManyToOne(() => User, (user) => user.comments)
   created_by: User;
 
@@ -33,11 +44,19 @@ export class Comment {
   })
   post: Post;
 
-  @OneToMany(() => Comment, (comment) => comment.parent, {
-    cascade: true,
-  })
+  // Switching from Adjacency Lists to Closure Tables
+  @TreeChildren({ cascade: ["remove"] })
   children: Comment[];
 
-  @ManyToOne(() => Comment, (comment) => comment.children)
+  @TreeParent({ onDelete: "CASCADE" })
   parent: Comment;
+
+  @AfterInsert()
+  async incrementPostCommentCount() {
+    try {
+      this.post.incrementCommentCount();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

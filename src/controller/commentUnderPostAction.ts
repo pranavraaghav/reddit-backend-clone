@@ -24,6 +24,25 @@ export async function commentUnderPostAction(
   }
   const { post_id, user_id, text } = value;
 
+  // Fetching post
+  try {
+    var post = await getManager()
+      .getRepository(Post)
+      .findOne({
+        select: ["post_id", "comment_count"],
+        where: { post_id: post_id },
+      });
+    if (!post) {
+      response.status(404).json({
+        message: "Post does not exist, check post_id",
+      });
+      return;
+    }
+  } catch (error) {
+    response.status(500).json({ error: error });
+    return;
+  }
+
   // Fetching user
   try {
     var user = await getManager()
@@ -43,35 +62,24 @@ export async function commentUnderPostAction(
     return;
   }
 
-  // Fetching post
+  // Create comment
+  const comment = new Comment();
+  comment.post = post;
+  comment.created_by = user;
+  comment.text = text;
+  comment.isRoot = true;
+
   try {
-    var post = await getManager()
-      .getRepository(Post)
-      .findOne({
-        select: ["post_id"],
-        where: { post_id: post_id },
-      });
-    if (!post) {
-      response.status(404).json({
-        message: "Post does not exist, check post_id",
-      });
-      return;
-    }
+    var createdComment = await getManager()
+      .getRepository(Comment)
+      .save(comment);
   } catch (error) {
     response.status(500).json({ error: error });
     return;
   }
 
-  const comment = new Comment();
-  comment.post = post;
-  comment.created_by = user;
-  comment.text = text;
-
-  try {
-    response
-      .status(200)
-      .send(await getManager().getRepository(Comment).save(comment));
-  } catch (error) {
-    response.status(500).json({ error: error });
-  }
+  const responseObject: any = createdComment;
+  delete responseObject.post;
+  delete responseObject.created_by;
+  response.status(201).send(createdComment);
 }
