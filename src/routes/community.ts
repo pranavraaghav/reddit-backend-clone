@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { communityCreateAction } from "../controller/communityCreateAction";
 import { postGetAllByCommunityAction } from "../controller/postGetAllByCommunityAction";
+import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
-router.post("/", (request, response) => {
+router.post("/", authenticateJWT, (request, response) => {
   communityCreateAction(request, response);
 });
 
