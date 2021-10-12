@@ -10,7 +10,6 @@ export async function userDeleteAction(request: Request, response: Response) {
   // request validation
   const schema = Joi.object({
     user_id: Joi.string().uuid().required(),
-    password: Joi.string().required(),
   });
   const { value, error } = schema.validate(request.body);
   if (error != null) {
@@ -19,14 +18,14 @@ export async function userDeleteAction(request: Request, response: Response) {
     });
     return;
   }
-  const { user_id, password } = value;
+  const { user_id } = value;
 
   // find user
   try {
     var user = await userRepo.findOne({ user_id: user_id });
     if (!user) {
       response.status(404).json({
-        message: "user does not exist",
+        message: "User not found",
       });
       return;
     }
@@ -35,15 +34,8 @@ export async function userDeleteAction(request: Request, response: Response) {
     return;
   }
 
-  // authenticate\
-  if ((await user.validatePassword(password)) === false) {
-    response.status(403).json({
-      message: "Authentication failed, wrong password",
-    });
-    return;
-  }
   try {
-    const deletedUser = await userRepo.remove(user);
+    const deletedUser = await userRepo.softRemove(user);
     response.status(200).send(deletedUser);
   } catch (error) {
     response.status(500).json({ error: error });

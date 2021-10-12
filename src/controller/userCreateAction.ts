@@ -2,8 +2,18 @@ import { Request, Response } from "express";
 import Joi from "joi";
 import { getManager } from "typeorm";
 import { User } from "../entity/User";
+import * as jwt from "jsonwebtoken";
 
 export async function userCreateAction(request: Request, response: Response) {
+  // ensuring jwt secret is defined
+  try {
+    var secret: string = process.env.JWT_SECRET!;
+    var expiresIn: string = process.env.JWT_EXPIRES_IN! || "30d";
+  } catch (error) {
+    response.status(500).send(error);
+    return;
+  }
+
   // fetch repo
   const userRepo = getManager().getRepository(User);
 
@@ -41,13 +51,19 @@ export async function userCreateAction(request: Request, response: Response) {
   user.password = password;
 
   try {
-    const createdUser = await userRepo.save(user);
-    // type User does not allow you to delete password
-    // would violate type definition otherwise
-    const responseObject: any = createdUser;
-    delete responseObject.password;
-    response.status(200).send(responseObject);
+    var createdUser = await userRepo.save(user);
   } catch (error) {
     response.status(500).json({ error: error });
+    return;
   }
+
+  const token = jwt.sign({ id: createdUser.user_id }, secret, {
+    expiresIn: expiresIn,
+  });
+
+  response.status(201).send({
+    message: "User created successfully",
+    token_type: "Bearer",
+    jwt: token,
+  });
 }

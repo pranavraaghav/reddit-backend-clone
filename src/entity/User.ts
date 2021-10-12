@@ -5,6 +5,7 @@ import {
   OneToMany,
   CreateDateColumn,
   BeforeInsert,
+  DeleteDateColumn,
 } from "typeorm";
 import { Post } from "./Post";
 import { Community } from "./Community";
@@ -18,6 +19,9 @@ export class User {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @Column({ unique: true })
   username: string;

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2c98fb09-0b84-4844-a67c-1c0437331b9a",
+		"_postman_id": "ff25611e-0075-4711-9d45-3805191507f0",
 		"name": "reddit-backend-clone",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,11 +11,21 @@
 				{
 					"name": "Create a Post",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"test-post\",\r\n    \"community_id\":\"{{community_id}}\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
+							"raw": "{\r\n    \"title\":\"test-post\",\r\n    \"community_id\":\"{{community_id}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -37,11 +47,21 @@
 				{
 					"name": "Update a Post",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"title\":\"test-post\",\r\n    \"description\":\"updated: {{$randomAlphaNumeric}}\",\r\n    \"imageurl\":\"updated: {{$randomAvatarImage}}\"\r\n}",
+							"raw": "{\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"title\":\"test-post\",\r\n    \"description\":\"updated: {{$randomAlphaNumeric}}\",\r\n    \"imageurl\":\"updated: {{$randomAvatarImage}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -63,11 +83,21 @@
 				{
 					"name": "Delete a Post",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\"\r\n}",
+							"raw": "{\r\n    \"post_id\":\"{{post_id}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -123,7 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"test-user5\",\r\n    \"password\":\"test-password\"\r\n}",
+							"raw": "{\r\n    \"username\":\"test-user\",\r\n    \"password\":\"test-password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -131,12 +161,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/user",
+							"raw": "{{base_url}}/user/signup",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"user"
+								"user",
+								"signup"
 							]
 						}
 					},
@@ -145,17 +176,18 @@
 				{
 					"name": "Delete a User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"user_id\":\"e376f652-4244-44ab-b6b3-c2f038afb29d\",\r\n    \"password\":\"test-password\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{base_url}}/user",
 							"host": [
@@ -176,11 +208,21 @@
 				{
 					"name": "Create a Community",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"test-community\",\r\n    \"user_id\": \"{{user_id}}\",\r\n    \"description\":\"Community for testing purposes\"\r\n}",
+							"raw": "{\r\n    \"name\": \"test-community\",\r\n    \"description\":\"Community for testing purposes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,11 +249,21 @@
 				{
 					"name": "Create Comment under Post",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+							"raw": "{\r\n    \"post_id\":\"{{post_id}}\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -234,11 +286,21 @@
 				{
 					"name": "Create Comment under Comment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"comment_id\": \"0d93e513-956d-4731-83f9-a6b422f97e91\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+							"raw": "{\r\n    \"comment_id\": \"32e0dad3-9d64-433e-a716-1b3ca72c3c3e\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -261,11 +323,21 @@
 				{
 					"name": "Update a Comment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"comment_id\":\"6f76a8df-ce06-4a5d-99e5-24ea6741873c\",\r\n    \"user_id\":\"{{user_id}}\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
+							"raw": "{\r\n    \"comment_id\":\"32e0dad3-9d64-433e-a716-1b3ca72c3c3e\",\r\n    \"text\":\"{{$randomCatchPhrase}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -288,11 +360,21 @@
 				{
 					"name": "Delete a Comment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"comment_id\": \"14d1460d-2a9b-47f9-ac33-d4c63ed8b0dc\",\r\n    \"user_id\":\"{{user_id}}\"\r\n}",
+							"raw": "{\r\n    \"comment_id\": \"32e0dad3-9d64-433e-a716-1b3ca72c3c3e\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -376,10 +458,6 @@
 	],
 	"variable": [
 		{
-			"key": "user_id",
-			"value": "a23a1e49-659d-4c3a-b6f9-d29fd94a4b55"
-		},
-		{
 			"key": "base_url",
 			"value": "http://localhost:8080"
 		},
@@ -390,6 +468,10 @@
 		{
 			"key": "post_id",
 			"value": "3dc26bd6-ceb2-4f67-a902-a5c1ce697978"
+		},
+		{
+			"key": "jwt",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEwNWMyYzNkLTkxYjUtNDdjZC04Yzc1LTY5MDQzOTQ0YzBhMSIsImlhdCI6MTYzMzk2ODk1OCwiZXhwIjoxNjM2NTYwOTU4fQ.zbKuTDbNEkOjW84QE4_rHwsVQA106ii9vpzcUViYllA"
 		}
 	]
 }
