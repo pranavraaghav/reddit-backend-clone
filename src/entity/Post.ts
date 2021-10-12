@@ -11,6 +11,7 @@ import {
 import { User } from "./User";
 import { Comment } from "./Comment";
 import { Community } from "./Community";
+import { Vote } from "./Vote";
 
 @Entity()
 export class Post {
@@ -48,6 +49,15 @@ export class Post {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @Column({ unsigned: true, default: 0 })
+  upvote_count: number;
+
+  @Column({ unsigned: true, default: 0 })
+  downvote_count: number;
+
+  @OneToMany(() => Vote, (vote) => vote.post)
+  votes: Vote[];
 
   async incrementCommentCount(value?: number) {
     this.comment_count += value || 1;

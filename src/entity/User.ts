@@ -6,11 +6,13 @@ import {
   CreateDateColumn,
   BeforeInsert,
   DeleteDateColumn,
+  ManyToOne,
 } from "typeorm";
 import { Post } from "./Post";
 import { Community } from "./Community";
 import { Comment } from "./Comment";
 import * as bcrypt from "bcrypt";
+import { Vote } from "./Vote";
 
 @Entity()
 export class User {
@@ -37,6 +39,9 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.created_by)
   comments: Comment[];
+
+  @OneToMany(() => Vote, (vote) => vote.user)
+  votes: Vote[];
 
   @BeforeInsert()
   async hashPassword() {
