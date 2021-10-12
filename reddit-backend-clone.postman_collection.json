@@ -153,7 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"test-user\",\r\n    \"password\":\"test-password\"\r\n}",
+							"raw": "{\r\n    \"username\":\"test-user5\",\r\n    \"password\":\"test-password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -414,6 +414,122 @@
 									"key": "post_id",
 									"value": "{{post_id}}"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Voting",
+			"item": [
+				{
+					"name": "Upvote a Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post_id\": \"{{post_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/post/upvote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post",
+								"upvote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Downvote a Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post_id\": \"{{post_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/post/downvote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post",
+								"downvote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unvote a Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post_id\": \"{{post_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/post/unvote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"post",
+								"unvote"
 							]
 						}
 					},
