@@ -11,9 +11,11 @@ import {
   TreeParent,
   TreeChildren,
   Tree,
+  OneToMany,
 } from "typeorm";
 import { User } from "./User";
 import { Post } from "./Post";
+import { Vote } from "./Vote";
 
 @Entity()
 @Tree("closure-table")
@@ -43,6 +45,15 @@ export class Comment {
     onDelete: "CASCADE", // comments get deleted when parent post is deleted
   })
   post: Post;
+
+  @Column({ unsigned: true, default: 0 })
+  upvote_count: number;
+
+  @Column({ unsigned: true, default: 0 })
+  downvote_count: number;
+
+  @OneToMany(() => Vote, (vote) => vote.comment)
+  votes: Vote[];
 
   // Switching from Adjacency Lists to Closure Tables
   @TreeChildren({ cascade: ["remove"] })
