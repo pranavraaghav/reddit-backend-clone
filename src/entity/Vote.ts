@@ -36,6 +36,14 @@ export class Vote {
   @ManyToOne(() => Post, (post) => post.votes, {
     onDelete: "CASCADE",
     cascade: true,
+    nullable: true,
   })
   post: Post;
+
+  @ManyToOne(() => Comment, (comment) => comment.votes, {
+    onDelete: "CASCADE",
+    cascade: true, // buggy
+    nullable: true,
+  })
+  comment: Comment;
 }

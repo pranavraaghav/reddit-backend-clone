@@ -462,6 +462,80 @@
 					"response": []
 				},
 				{
+					"name": "Upvote a Comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment_id\": \"{{comment_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/upvote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"upvote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Downvote a Comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment_id\": \"{{comment_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/downvote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"downvote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Downvote a Post",
 					"request": {
 						"auth": {
@@ -534,6 +608,43 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Unvote a Comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment_id\": \"{{comment_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/unvote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"unvote"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -588,6 +699,10 @@
 		{
 			"key": "jwt",
 			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEwNWMyYzNkLTkxYjUtNDdjZC04Yzc1LTY5MDQzOTQ0YzBhMSIsImlhdCI6MTYzMzk2ODk1OCwiZXhwIjoxNjM2NTYwOTU4fQ.zbKuTDbNEkOjW84QE4_rHwsVQA106ii9vpzcUViYllA"
+		},
+		{
+			"key": "comment_id",
+			"value": "0d512df5-7705-4dcb-8c06-0129a17900a6"
 		}
 	]
 }
