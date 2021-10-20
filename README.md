@@ -1,10 +1,13 @@
-# Reddit Backend Clone - built with Nodejs
+# Reddit Backend Clone
 
-A clone of Reddit's backend API built using Nodejs and TypeScript. 
+A backend API built using Nodejs and TypeScript that recreates all of Reddit's basic backend functionality. 
 
-## Description
+## About
 
-I built this project as a learning exercise to get better at building backend systems using Nodejs + TypeScript and to get better at designing and implementing complex database schemas in Relational Databases.
+#### I built this project as a learning exercise to accomplish the following: 
+- Learning how to build backend systems that scale and are maintainable.
+- Familiarizing myself with TypeScript usage.
+- Geting better at designing and implementing complex database schemas in Relational Databases.
 
 ## Getting Started
 
