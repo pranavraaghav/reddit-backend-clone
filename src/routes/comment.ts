@@ -10,26 +10,11 @@ import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
-router.post("/comment", authenticateJWT, (request, response) => {
-  commentUnderCommentAction(request, response);
-});
+router.put("/", authenticateJWT, commentUpdateAction);
+router.delete("/", authenticateJWT, commentDeleteAction);
 
-router.post("/upvote", authenticateJWT, (request, response) => {
-  commentUpvoteAction(request, response);
-});
+router.post("/upvote", authenticateJWT, commentUpvoteAction);
+router.post("/downvote", authenticateJWT, commentDownvoteAction);
+router.post("/unvote", authenticateJWT, commentUnvoteAction);
 
-router.post("/downvote", authenticateJWT, (request, response) => {
-  commentDownvoteAction(request, response);
-});
-
-router.post("/unvote", authenticateJWT, (request, response) => {
-  commentUnvoteAction(request, response);
-});
-
-router.put("/", authenticateJWT, (request, response) => {
-  commentUpdateAction(request, response);
-});
-
-router.delete("/", authenticateJWT, (request, response) => {
-  commentDeleteAction(request, response);
-});
+router.post("/comment", authenticateJWT, commentUnderCommentAction); // Commenting under a comment

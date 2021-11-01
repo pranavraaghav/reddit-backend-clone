@@ -12,6 +12,4 @@ router.use("/post", postRouter);
 router.use("/comment", commentRouter);
 router.use("/community", communityRouter);
 
-router.get("/", (request, response) => {
-  baseAction(request, response);
-});
+router.get("/", baseAction);
