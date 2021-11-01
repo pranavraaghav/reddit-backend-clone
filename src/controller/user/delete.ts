@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getManager } from "typeorm";
-import { User } from "../entity/User";
+import { User } from "../../entity/User";
 
-export async function userDeleteAction(request: Request, response: Response) {
+export async function userDelete(request: Request, response: Response) {
   // fetch repo
   const userRepo = getManager().getRepository(User);
 

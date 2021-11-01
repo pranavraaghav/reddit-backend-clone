@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getConnection, getManager } from "typeorm";
-import { Post } from "../entity/Post";
-import { User } from "../entity/User";
-import { Vote, voteType } from "../entity/Vote";
+import { Post } from "../../entity/Post";
+import { User } from "../../entity/User";
+import { Vote, voteType } from "../../entity/Vote";
 
-export async function postUpvoteAction(request: Request, response: Response) {
+export async function postDownvote(request: Request, response: Response) {
   // request validation
   const schema = Joi.object({
     user_id: Joi.string().uuid().required(),
@@ -32,18 +32,18 @@ export async function postUpvoteAction(request: Request, response: Response) {
       .getOne();
 
     if (existingVote) {
-      if (existingVote.value === voteType.UPVOTE) {
+      if (existingVote.value === voteType.DOWNVOTE) {
         response.status(400).json({
-          message: "Cannot upvote more than once",
+          message: "Cannot downvote more than once",
         });
       }
-      if (existingVote.value === voteType.DOWNVOTE) {
-        existingVote.value = voteType.UPVOTE;
-        existingVote.post.upvote_count += 1;
-        existingVote.post.downvote_count -= 1;
+      if (existingVote.value === voteType.UPVOTE) {
+        existingVote.value = voteType.DOWNVOTE;
+        existingVote.post.upvote_count -= 1;
+        existingVote.post.downvote_count += 1;
         try {
           await getConnection().getRepository(Vote).save(existingVote);
-          response.status(200).json({ message: "Vote updated to a upvote" });
+          response.status(200).json({ message: "Vote updated to a downvote" });
         } catch (error) {
           response
             .status(400)
@@ -96,7 +96,7 @@ export async function postUpvoteAction(request: Request, response: Response) {
   vote.value = voteType.UPVOTE;
   vote.post = post;
   vote.user = user;
-  post.upvote_count += 1;
+  post.downvote_count += 1;
 
   // update db
   try {

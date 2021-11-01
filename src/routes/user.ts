@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { userCreateAction } from "../controller/userCreateAction";
-import { userDeleteAction } from "../controller/userDeleteAction";
-import { userLoginAction } from "../controller/userLoginAction";
+import { userCreate } from "../controller/user/create";
+import { userDelete } from "../controller/user/delete";
+import { userLogin } from "../controller/user/login";
 import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
-router.post("/signup", userCreateAction);
-router.post("/login", userLoginAction);
-router.delete("/", authenticateJWT, userDeleteAction);
+router.post("/signup", userCreate);
+router.post("/login", userLogin);
+router.delete("/", authenticateJWT, userDelete);

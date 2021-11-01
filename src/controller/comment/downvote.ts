@@ -1,15 +1,18 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getConnection, getManager } from "typeorm";
-import { Post } from "../entity/Post";
-import { User } from "../entity/User";
-import { Vote, voteType } from "../entity/Vote";
+import { Comment } from "../../entity/Comment";
+import { User } from "../../entity/User";
+import { Vote, voteType } from "../../entity/Vote";
 
-export async function postDownvoteAction(request: Request, response: Response) {
+export async function commentDownvote(
+  request: Request,
+  response: Response
+) {
   // request validation
   const schema = Joi.object({
     user_id: Joi.string().uuid().required(),
-    post_id: Joi.string().uuid().required(),
+    comment_id: Joi.string().uuid().required(),
   });
   const { value, error } = schema.validate(request.body);
   if (error != null) {
@@ -18,16 +21,16 @@ export async function postDownvoteAction(request: Request, response: Response) {
     });
     return;
   }
-  const { user_id, post_id } = value;
+  const { user_id, comment_id } = value;
 
   // check if vote already exists
   try {
     var existingVote = await getConnection()
       .getRepository(Vote)
       .createQueryBuilder("vote")
-      .leftJoinAndSelect("vote.post", "post")
+      .leftJoinAndSelect("vote.comment", "comment")
       .leftJoinAndSelect("vote.user", "user")
-      .where("post.post_id = :post_id", { post_id: post_id })
+      .where("comment.comment_id = :comment_id", { comment_id: comment_id })
       .andWhere("user.user_id = :user_id", { user_id: user_id })
       .getOne();
 
@@ -39,10 +42,28 @@ export async function postDownvoteAction(request: Request, response: Response) {
       }
       if (existingVote.value === voteType.UPVOTE) {
         existingVote.value = voteType.DOWNVOTE;
-        existingVote.post.upvote_count -= 1;
-        existingVote.post.downvote_count += 1;
+        // find comment
+        try {
+          var comment = await getConnection()
+            .getRepository(Comment)
+            .findOne({ where: { comment_id: comment_id } });
+          if (!comment) {
+            response.status(404).send({
+              message: "Comment not found",
+            });
+            return;
+          }
+        } catch (error) {
+          response
+            .status(500)
+            .json({ message: "Issue fetching comment", error: error });
+          return;
+        }
+        comment.upvote_count -= 1;
+        comment.downvote_count += 1;
         try {
           await getConnection().getRepository(Vote).save(existingVote);
+          await getConnection().getRepository(Comment).save(comment);
           response.status(200).json({ message: "Vote updated to a downvote" });
         } catch (error) {
           response
@@ -75,35 +96,40 @@ export async function postDownvoteAction(request: Request, response: Response) {
     return;
   }
 
-  // find post
+  // find comment
   try {
-    var post = await getConnection()
-      .getRepository(Post)
-      .findOne({ where: { post_id: post_id } });
-    if (!post) {
+    var comment = await getConnection()
+      .getRepository(Comment)
+      .findOne({ where: { comment_id: comment_id } });
+    if (!comment) {
       response.status(404).send({
-        message: "Post not found",
+        message: "Comment not found",
       });
       return;
     }
   } catch (error) {
-    response.status(500).json({ message: "Issue fetching post", error: error });
+    response
+      .status(500)
+      .json({ message: "Issue fetching commenet", error: error });
     return;
   }
 
   // modify
   const vote = new Vote();
-  vote.value = voteType.UPVOTE;
-  vote.post = post;
+  vote.value = voteType.DOWNVOTE;
+  vote.comment = comment;
   vote.user = user;
-  post.downvote_count += 1;
 
   // update db
   try {
-    response
-      .status(200)
-      .send(await getConnection().getRepository(Vote).save(vote));
+    // cascade behaviour of vote-comment insert didn't work properly
+    // doesn't give error code so can't troubleshoot
+    // using double queries for now
+    await getConnection().getRepository(Vote).save(vote);
+    comment.downvote_count += 1;
+    await getConnection().getRepository(Comment).save(comment);
   } catch (error) {
     response.status(500).json({ error: error });
   }
+  response.status(200).send({ message: "Upvoted comment successfully" });
 }

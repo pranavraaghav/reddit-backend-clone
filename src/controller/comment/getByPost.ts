@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { Comment } from "../entity/Comment";
+import { Comment } from "../../entity/Comment";
 import { getConnection } from "typeorm";
 import Joi from "joi";
 
-export async function commentGetByPostAction(
+export async function commentGetByPost(
   request: Request,
   response: Response
 ) {

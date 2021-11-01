@@ -1,26 +1,26 @@
 import { Router } from "express";
-import { commentGetByPostAction } from "../controller/commentGetByPostAction";
-import { commentUnderPostAction } from "../controller/commentUnderPostAction";
-import { postCreateAction } from "../controller/postCreateAction";
-import { postDeleteAction } from "../controller/postDeleteAction";
-import { postDownvoteAction } from "../controller/postDownvoteAction";
-import { postUnvoteAction } from "../controller/postUnvoteAction";
-import { postUpdateAction } from "../controller/postUpdateAction";
-import { postUpvoteAction } from "../controller/postUpvoteAction";
+import { commentGetByPost } from "../controller/comment/getByPost";
+import { commentUnderPost } from "../controller/comment/commentUnderPost";
+import { postCreate } from "../controller/post/create";
+import { postDelete } from "../controller/post/delete";
+import { postDownvote } from "../controller/post/downvote";
+import { postUnvote } from "../controller/post/unvote";
+import { postUpdate } from "../controller/post/update";
+import { postUpvote } from "../controller/post/upvote";
 import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
 // Unauthorized 
-router.get("/:post_id/comments", commentGetByPostAction);
+router.get("/:post_id/comments", commentGetByPost);
 
 // Authorized
-router.post("/", authenticateJWT, postCreateAction);
-router.put("/", authenticateJWT, postUpdateAction);
-router.delete("/", authenticateJWT, postDeleteAction);
+router.post("/", authenticateJWT, postCreate);
+router.put("/", authenticateJWT, postUpdate);
+router.delete("/", authenticateJWT, postDelete);
 
-router.post("/upvote", authenticateJWT, postUpvoteAction);
-router.post("/downvote", authenticateJWT, postDownvoteAction);
-router.post("/unvote", authenticateJWT, postUnvoteAction);
+router.post("/upvote", authenticateJWT, postUpvote);
+router.post("/downvote", authenticateJWT, postDownvote);
+router.post("/unvote", authenticateJWT, postUnvote);
 
-router.post("/comment", authenticateJWT, commentUnderPostAction);
+router.post("/comment", authenticateJWT, commentUnderPost);
