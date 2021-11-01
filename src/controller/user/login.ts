@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import Joi from "joi";
 import * as jwt from "jsonwebtoken";
-import { User } from "../entity/User";
+import { User } from "../../entity/User";
 
-export async function userLoginAction(request: Request, response: Response) {
+export async function userLogin(request: Request, response: Response) {
   // ensuring jwt secret is defined
   try {
     var secret: string = process.env.JWT_SECRET!;

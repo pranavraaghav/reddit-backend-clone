@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getConnection } from "typeorm";
-import { Comment } from "../entity/Comment";
-import { Vote, voteType } from "../entity/Vote";
+import { Comment } from "../../entity/Comment";
+import { Vote, voteType } from "../../entity/Vote";
 
-export async function commentUnvoteAction(
+export async function commentUnvote(
   request: Request,
   response: Response
 ) {

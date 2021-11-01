@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
-import { Post } from "../entity/Post";
+import { Post } from "../../entity/Post";
 
-export async function postGetAllByCommunityAction(
+export async function postGetAllByCommunity(
   request: Request,
   response: Response
 ) {

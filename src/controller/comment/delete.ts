@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import { Comment } from "../entity/Comment";
+import { Comment } from "../../entity/Comment";
 import { getManager } from "typeorm";
-import { User } from "../entity/User";
 import Joi from "joi";
-import { Post } from "../entity/Post";
+import recursiveDescendantCommentDelete from "../../service/recursiveCommentDelete";
 
-export async function commentUpdateAction(
+export async function commentDelete(
   request: Request,
   response: Response
 ) {
@@ -13,7 +12,6 @@ export async function commentUpdateAction(
   const schema = Joi.object({
     comment_id: Joi.string().uuid().required(),
     user_id: Joi.string().uuid().required(),
-    text: Joi.string().required(),
   });
   const { value, error } = schema.validate(request.body);
   if (error != null) {
@@ -22,7 +20,7 @@ export async function commentUpdateAction(
     });
     return;
   }
-  const { comment_id, user_id, text } = value;
+  const { comment_id, user_id } = value;
 
   const commentRepo = getManager().getRepository(Comment);
 
@@ -31,7 +29,7 @@ export async function commentUpdateAction(
     var comment = await commentRepo
       .createQueryBuilder("comment")
       .leftJoin("comment.created_by", "created_by")
-      .addSelect("created_by.user_id")
+      .addSelect(["created_by.user_id"])
       .where("comment.comment_id = :comment_id", { comment_id: comment_id })
       .getOne();
   } catch (error) {
@@ -43,7 +41,7 @@ export async function commentUpdateAction(
 
   if (!comment) {
     response.status(404).json({
-      message: "comment does not exist, check comment_id",
+      message: "comment does not exist",
     });
     return;
   }
@@ -55,13 +53,15 @@ export async function commentUpdateAction(
     return;
   }
 
-  comment.text = text;
-
+  // Delete the comment
   try {
-    response.status(200).send(await commentRepo.save(comment));
+    await recursiveDescendantCommentDelete(comment);
   } catch (error) {
     response
       .status(500)
-      .json({ message: "Error updating value", error: error });
+      .json({ message: "Error deleting comment", error: error });
+    return;
   }
+
+  response.status(200).send({ message: "Deleted comments recursively" });
 }

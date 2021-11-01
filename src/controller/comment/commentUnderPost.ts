@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
-import { Comment } from "../entity/Comment";
-import { getConnection } from "typeorm";
-import { User } from "../entity/User";
+import { Comment } from "../../entity/Comment";
+import { getManager } from "typeorm";
+import { User } from "../../entity/User";
 import Joi from "joi";
+import { Post } from "../../entity/Post";
 
-export async function commentUnderCommentAction(
+export async function commentUnderPost(
   request: Request,
   response: Response
 ) {
   // request validation
   const schema = Joi.object({
     user_id: Joi.string().uuid().required(),
-    comment_id: Joi.string().required(),
+    post_id: Joi.string().required(),
     text: Joi.string().required(),
   });
   const { value, error } = schema.validate(request.body);
@@ -21,11 +22,30 @@ export async function commentUnderCommentAction(
     });
     return;
   }
-  const { comment_id, user_id, text } = value;
+  const { post_id, user_id, text } = value;
+
+  // Fetching post
+  try {
+    var post = await getManager()
+      .getRepository(Post)
+      .findOne({
+        select: ["post_id", "comment_count"],
+        where: { post_id: post_id },
+      });
+    if (!post) {
+      response.status(404).json({
+        message: "Post does not exist, check post_id",
+      });
+      return;
+    }
+  } catch (error) {
+    response.status(500).json({ error: error });
+    return;
+  }
 
   // Fetching user
   try {
-    var user = await getConnection()
+    var user = await getManager()
       .getRepository(User)
       .findOne({
         select: ["user_id", "username"],
@@ -42,36 +62,15 @@ export async function commentUnderCommentAction(
     return;
   }
 
-  // Fetching parent comment
-  try {
-    var parentComment = await getConnection()
-      .getRepository(Comment)
-      .createQueryBuilder("comment")
-      .innerJoin("comment.post", "post")
-      .select(["comment.comment_id", "post.post_id", "post.comment_count"])
-      .where("comment.comment_id = :id", { id: comment_id })
-      .getOne();
-
-    if (!parentComment) {
-      response.status(404).json({
-        message: "parentComment does not exist, check comment_id",
-      });
-      return;
-    }
-  } catch (error) {
-    response.status(500).json({ error: error });
-    return;
-  }
-
+  // Create comment
   const comment = new Comment();
-  comment.parent = parentComment;
+  comment.post = post;
   comment.created_by = user;
   comment.text = text;
-  comment.post = parentComment.post;
+  comment.isRoot = true;
 
-  // Create Comment
   try {
-    var createdComment = await getConnection()
+    var createdComment = await getManager()
       .getRepository(Comment)
       .save(comment);
   } catch (error) {
@@ -79,9 +78,8 @@ export async function commentUnderCommentAction(
     return;
   }
 
-  // Response
   const responseObject: any = createdComment;
-  delete responseObject.parent;
   delete responseObject.post;
+  delete responseObject.created_by;
   response.status(201).send(createdComment);
 }

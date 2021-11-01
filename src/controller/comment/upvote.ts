@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getConnection, getManager } from "typeorm";
-import { Comment } from "../entity/Comment";
-import { User } from "../entity/User";
-import { Vote, voteType } from "../entity/Vote";
+import { Comment } from "../../entity/Comment";
+import { User } from "../../entity/User";
+import { Vote, voteType } from "../../entity/Vote";
 
-export async function commentDownvoteAction(
+export async function commentUpvote(
   request: Request,
   response: Response
 ) {
@@ -35,13 +35,13 @@ export async function commentDownvoteAction(
       .getOne();
 
     if (existingVote) {
-      if (existingVote.value === voteType.DOWNVOTE) {
+      if (existingVote.value === voteType.UPVOTE) {
         response.status(400).json({
-          message: "Cannot downvote more than once",
+          message: "Cannot upvote more than once",
         });
       }
-      if (existingVote.value === voteType.UPVOTE) {
-        existingVote.value = voteType.DOWNVOTE;
+      if (existingVote.value === voteType.DOWNVOTE) {
+        existingVote.value = voteType.UPVOTE;
         // find comment
         try {
           var comment = await getConnection()
@@ -59,12 +59,12 @@ export async function commentDownvoteAction(
             .json({ message: "Issue fetching comment", error: error });
           return;
         }
-        comment.upvote_count -= 1;
-        comment.downvote_count += 1;
+        comment.upvote_count += 1;
+        comment.downvote_count -= 1;
         try {
           await getConnection().getRepository(Vote).save(existingVote);
           await getConnection().getRepository(Comment).save(comment);
-          response.status(200).json({ message: "Vote updated to a downvote" });
+          response.status(200).json({ message: "Vote updated to a upvote" });
         } catch (error) {
           response
             .status(400)
@@ -116,7 +116,7 @@ export async function commentDownvoteAction(
 
   // modify
   const vote = new Vote();
-  vote.value = voteType.DOWNVOTE;
+  vote.value = voteType.UPVOTE;
   vote.comment = comment;
   vote.user = user;
 
@@ -126,10 +126,13 @@ export async function commentDownvoteAction(
     // doesn't give error code so can't troubleshoot
     // using double queries for now
     await getConnection().getRepository(Vote).save(vote);
-    comment.downvote_count += 1;
+    comment.upvote_count += 1;
     await getConnection().getRepository(Comment).save(comment);
   } catch (error) {
-    response.status(500).json({ error: error });
+    response
+      .status(500)
+      .json({ message: "Error saving new vote", error: error });
   }
+
   response.status(200).send({ message: "Upvoted comment successfully" });
 }

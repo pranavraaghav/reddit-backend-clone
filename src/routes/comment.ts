@@ -1,20 +1,19 @@
-import { response, Router } from "express";
-import { request } from "http";
-import { commentDeleteAction } from "../controller/commentDeleteAction";
-import { commentDownvoteAction } from "../controller/commentDownvoteAction";
-import { commentUnderCommentAction } from "../controller/commentUnderCommentAction";
-import { commentUnvoteAction } from "../controller/commentUnvoteAction";
-import { commentUpdateAction } from "../controller/commentUpdateActions";
-import { commentUpvoteAction } from "../controller/commentUpvoteAction";
+import { Router } from "express";
+import { commentDelete } from "../controller/comment/delete";
+import { commentDownvote } from "../controller/comment/downvote";
+import { commentUnderComment } from "../controller/comment/commentUnderComment";
+import { commentUnvote } from "../controller/comment/unvote";
+import { commentUpdate } from "../controller/comment/update";
+import { commentUpvote } from "../controller/comment/upvote";
 import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
-router.put("/", authenticateJWT, commentUpdateAction);
-router.delete("/", authenticateJWT, commentDeleteAction);
+router.put("/", authenticateJWT, commentUpdate);
+router.delete("/", authenticateJWT, commentDelete);
 
-router.post("/upvote", authenticateJWT, commentUpvoteAction);
-router.post("/downvote", authenticateJWT, commentDownvoteAction);
-router.post("/unvote", authenticateJWT, commentUnvoteAction);
+router.post("/upvote", authenticateJWT, commentUpvote);
+router.post("/downvote", authenticateJWT, commentDownvote);
+router.post("/unvote", authenticateJWT, commentUnvote);
 
-router.post("/comment", authenticateJWT, commentUnderCommentAction); // Commenting under a comment
+router.post("/comment", authenticateJWT, commentUnderComment); // Commenting under a comment

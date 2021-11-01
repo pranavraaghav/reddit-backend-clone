@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getManager } from "typeorm";
-import { User } from "../entity/User";
+import { User } from "../../entity/User";
 import * as jwt from "jsonwebtoken";
 
-export async function userCreateAction(request: Request, response: Response) {
+export async function userCreate(request: Request, response: Response) {
   // ensuring jwt secret is defined
   try {
     var secret: string = process.env.JWT_SECRET!;

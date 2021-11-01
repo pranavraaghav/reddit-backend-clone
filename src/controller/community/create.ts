@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getManager } from "typeorm";
-import { Community } from "../entity/Community";
-import { User } from "../entity/User";
+import { Community } from "../../entity/Community";
+import { User } from "../../entity/User";
 
-export async function communityCreateAction(
+export async function communityCreate(
   request: Request,
   response: Response
 ) {

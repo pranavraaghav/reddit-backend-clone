@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getConnection, getManager } from "typeorm";
-import { Post } from "../entity/Post";
-import { Vote, voteType } from "../entity/Vote";
+import { Post } from "../../entity/Post";
+import { Vote, voteType } from "../../entity/Vote";
 
-export async function postUnvoteAction(request: Request, response: Response) {
+export async function postUnvote(request: Request, response: Response) {
   // request validation
   const schema = Joi.object({
     user_id: Joi.string().uuid().required(),

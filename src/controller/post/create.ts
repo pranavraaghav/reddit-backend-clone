@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getManager } from "typeorm";
-import { Community } from "../entity/Community";
-import { Post } from "../entity/Post";
-import { User } from "../entity/User";
+import { Community } from "../../entity/Community";
+import { Post } from "../../entity/Post";
+import { User } from "../../entity/User";
 
-export async function postCreateAction(request: Request, response: Response) {
+export async function postCreate(request: Request, response: Response) {
   // fetch repo
   const postRepo = getManager().getRepository(Post);
 

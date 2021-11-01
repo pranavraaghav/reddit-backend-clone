@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Joi from "joi";
 import { getManager } from "typeorm";
-import { Post } from "../entity/Post";
+import { Post } from "../../entity/Post";
 
-export async function postDeleteAction(request: Request, response: Response) {
+export async function postDelete(request: Request, response: Response) {
   // request validation
   const schema = Joi.object({
     user_id: Joi.string().uuid().required(),

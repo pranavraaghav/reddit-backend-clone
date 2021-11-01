@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { communityCreateAction } from "../controller/communityCreateAction";
-import { postGetAllByCommunityAction } from "../controller/postGetAllByCommunityAction";
+import { communityCreate } from "../controller/community/create";
+import { postGetAllByCommunity } from "../controller/post/getAllByCommunity";
 import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
 // Unauthorized
-router.get("/:community_id/posts", postGetAllByCommunityAction);
+router.get("/:community_id/posts", postGetAllByCommunity);
 
 // Authorized
-router.post("/", authenticateJWT, communityCreateAction);
+router.post("/", authenticateJWT, communityCreate);
