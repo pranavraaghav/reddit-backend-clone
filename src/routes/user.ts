@@ -6,14 +6,6 @@ import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
-router.post("/signup", (request, response) => {
-  userCreateAction(request, response);
-});
-
-router.post("/login", (request, response) => {
-  userLoginAction(request, response);
-});
-
-router.delete("/", authenticateJWT, (request, response) => {
-  userDeleteAction(request, response);
-});
+router.post("/signup", userCreateAction);
+router.post("/login", userLoginAction);
+router.delete("/", authenticateJWT, userDeleteAction);

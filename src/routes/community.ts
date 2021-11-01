@@ -5,10 +5,8 @@ import { authenticateJWT } from "../middleware/auth";
 
 export const router = Router();
 
-router.post("/", authenticateJWT, (request, response) => {
-  communityCreateAction(request, response);
-});
+// Unauthorized
+router.get("/:community_id/posts", postGetAllByCommunityAction);
 
-router.get("/:community_id/posts", (request, response) => {
-  postGetAllByCommunityAction(request, response);
-});
+// Authorized
+router.post("/", authenticateJWT, communityCreateAction);
